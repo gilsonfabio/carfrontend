@@ -4,8 +4,8 @@ import { setCookie, parseCookies, destroyCookie } from 'nookies'
 
 import { api } from "../services/api";
 
-const NewModalidade = () => {
-    const [modDescricao, setDescricao] = useState('');
+const NewMarca = () => {
+    const [marDescricao, setDescricao] = useState('');
     
     const { 'nextauth.token': token } = parseCookies();
     const { 'nextauth.refreshToken': refreshToken } = parseCookies();
@@ -18,15 +18,15 @@ const NewModalidade = () => {
 
         api({
             method: 'post',    
-            url: `newmodalidade`,
+            url: `newmarca`,
             data: {
-              modDescricao,                            
+              marDescricao,                            
             },
             headers: {
                 "x-access-token" : token    
             },      
         }).then(function(response) {
-            alert('Modalidade cadastrada com sucesso!')
+            alert('Marca cadastrada com sucesso!')
         }).catch(function(error) {
             handleRefreshToken()          
         })
@@ -56,7 +56,7 @@ const NewModalidade = () => {
           setCookie(undefined, 'nextauth.usrNivAcesso', response.data.user.usrNivAcesso, {maxAge: 60 * 60 * 1, })                
           handleCadastra
       }).catch(function(error) {
-          alert(`Falha no token de cadastro de modalidades`);
+          alert(`Falha no token de cadastro de marcas`);
           Router.push({
               pathname: '/',        
           })      
@@ -74,7 +74,7 @@ const NewModalidade = () => {
                   <div className='md:p-12 md:mx-6'>
                     <div className='text-center'>
                       <h4 className='text-xl font-semibold mt-1 mb-12 pb-1'>
-                        Formulário Cadastro de Modalidades
+                        Formulário Cadastro de Marcas
                       </h4>
                     </div>
                     <form>                       
@@ -84,7 +84,7 @@ const NewModalidade = () => {
                           className='form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                           placeholder='Descrição da Modalidade'
                           name='modDescricao'
-                          value={modDescricao} 
+                          value={marDescricao} 
                           onChange={(e) => {setDescricao(e.target.value)}} 
                         />
                       </div>
@@ -109,4 +109,4 @@ const NewModalidade = () => {
     </section>
     );
 };
-export default NewModalidade;
+export default NewMarca;

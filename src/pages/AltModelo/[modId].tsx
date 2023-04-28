@@ -4,22 +4,19 @@ import { setCookie, parseCookies, destroyCookie } from 'nookies'
 
 import { api } from "../../services/api";
 
-interface equipeProps {
-    equId: number;
-    equDescricao: string;
-    equIdEvento: number;
-    equRegiao: string;
-    equResp: string;
-    equTecnico: number;
-    equDirigente: string;
-    equStatus: string;
+interface marcaProps {
+    marId: number;
+    marDescricao: string;
 }
 
-const AltModalidade = () => {
+const AltModelo = () => {
     const router = useRouter();
-    const [idMol, setIdModalidade] = useState(router.query.modId); 
-    const [modDescricao, setDescricao] = useState('');
-    
+    const [idMod, setIdModelo] = useState(router.query.modId); 
+    const [modDescricao, setModDescricao] = useState('');
+    const [modMarId, setModMarId] = useState('');
+    const [marDescricao, setMarDescricao] = useState('');
+    const [marcas, setMarcas] = useState([]);
+
     const [atualiza, setAtualiza] = useState(0);
     const [saving, setSaving] = useState(0);
 
@@ -33,16 +30,30 @@ const AltModalidade = () => {
 
     useEffect(() => {    
     
-      setIdModalidade(modId);
+      setIdModelo(modId);
   
       api({
         method: 'get',    
-        url: `dadModalidade/${modId}`,
+        url: `dadModelo/${modId}`,
         headers: {
             "x-access-token" : token    
         },      
       }).then(function(response) {
-        setDescricao(response.data[0].modDescricao);
+        setModDescricao(response.data[0].modDescricao);
+        setModMarId(response.data[0].modMarId);
+        setMarDescricao(response.data[0].marDescricao);
+      }).catch(function(error) {           
+        handleRefreshToken()                 
+      })
+
+      api({
+        method: 'get',    
+        url: `marcas`,
+        headers: {
+            "x-access-token" : token    
+        },      
+      }).then(function(response) {
+        setMarcas(response.data);
       }).catch(function(error) {           
         handleRefreshToken()                 
       })
@@ -53,15 +64,16 @@ const AltModalidade = () => {
       e.preventDefault();
       api({
           method: 'put',    
-          url: `updModalidade/${modId}`,
+          url: `updModelo/${modId}`,
           data: {
-            modDescricao,                            
+            modDescricao,
+            modMarId,                            
           },
           headers: {
               "x-access-token" : token    
           },      
       }).then(function(response) {
-          alert('Modalidade alterada com sucesso!')
+          alert('Modelo alterado com sucesso!')
           Router.back()
       }).catch(function(error) {
           setSaving(saving + 1)
@@ -97,7 +109,7 @@ const AltModalidade = () => {
             setAtualiza(atualiza + 1)
           }
       }).catch(function(error) {
-          alert(`Falha no token de cadastro de modalidades`);
+          alert(`Falha no token de cadastro de modelos`);
           Router.push({
               pathname: '/',        
           })      
@@ -115,7 +127,7 @@ const AltModalidade = () => {
                   <div className='md:p-12 md:mx-6'>
                     <div className='text-center'>
                       <h4 className='text-xl font-semibold mt-1 mb-12 pb-1'>
-                        Formulário Alteração de Modalidade
+                        Formulário Alteração de Modelo
                       </h4>
                     </div>
                     <form>                       
@@ -123,13 +135,26 @@ const AltModalidade = () => {
                         <input
                           type='text'
                           className='form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
-                          placeholder='Descrição da Modalidade'
+                          placeholder='Descrição do Modelo'
                           name='modDescricao'
                           value={modDescricao} 
-                          onChange={(e) => {setDescricao(e.target.value)}} 
+                          onChange={(e) => {setModDescricao(e.target.value)}} 
                         />
                       </div>
-                                              
+                      <div className='mb-1'> 
+                        <span className='text-[8px] text-gray-300'>Marca atual:{marDescricao} </span>    
+                      </div>
+                      <div className='mb-4'> 
+                        <select 
+                          value={modMarId} 
+                          onChange={(e) => {setModMarId(e.target.value)}} 
+                          className="form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example">                          
+                          <option selected>Selecione a Marca desejada</option>
+                          {marcas.map((row) => (
+                            <option key={row.marId} value={row.marId}>{row.marDescricao}</option>
+                          ))}
+                        </select>             
+                      </div>                         
                       <div className='text-center pt-1 mb-12 pb-1'>
                         <button
                           className='bg-green inline-block px-6 py-2.5 text-black hover:text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3'
@@ -150,4 +175,4 @@ const AltModalidade = () => {
     </section>
     );
 };
-export default AltModalidade;
+export default AltModelo;

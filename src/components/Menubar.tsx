@@ -2,7 +2,6 @@ import React from 'react'
 import Image from 'next/image'
 import Router, { useRouter } from "next/router";
 
-//import logoBarra from '../assets/images/logo-barra.png'
 import Link from 'next/link';
 
 function handleHome() {

@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
 import Link from 'next/link';
-import Header from '../components/Header';
 import Menubar from '../components/Menubar';
 import Router, { useRouter } from "next/router";
 import { AuthContext } from '../contexts/AuthContext';
@@ -23,36 +22,36 @@ const Dashboard = () => {
       setNivLiberado('9');      
     }, [])
     
-    function handleModalidades(){
+    function handleMarcas(){
       Router.push({
-        pathname: '/AdmModalidades',
+        pathname: '/AdmMarcas',
         query: { id: `${idUsr}`, nivAce: `${nivAcesso}`}        
       })        
     }
 
-    function handleEventos(){
+    function handleModelos(){
       Router.push({
-        pathname: '/AdmEventos', 
+        pathname: '/AdmModelos', 
         query: { id: `${idUsr}`, nivAce: `${nivAcesso}`}        
       })        
     }
 
-    function handleEquipes(){
+    function handleVeiculos(){
       Router.push({
-        pathname: '/AdmEquipes',        
+        pathname: '/Veículos',        
       })        
     }
 
-    function handleAdmin(){
+    function handleUsuarios(){
       Router.push({
-        pathname: '/AdmAdmin',
+        pathname: '/Usuários',
         query: { id: `${idUsr}`, nivAce: `${nivAcesso}`}        
       })        
     }
 
-    function handleTecnicos(){
+    function handleClientes(){
       Router.push({
-        pathname: '/AdmTecnicos',        
+        pathname: '/Clientes',        
       })        
     }
 
@@ -60,41 +59,40 @@ const Dashboard = () => {
     <div className='bg-white w-screen h-auto md:h-full'>
       <div className='flex flex-col w-screen '>
         <Menubar />
-        <Header />        
       </div>
       <div className="md:ml-32 md:mr-32 text-green-500 p-2 grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-2 mt-6" >  
-        <button onClick={handleModalidades} className="">
+        <button onClick={handleMarcas} className="">
           <div className="flex items-center justify-center h-24 rounded overflow-hidden shadow-2xl mb-5 " > 
             <p className="text-gray-700 text-2xl font-bold">
-              Modalidades
+              Marcas
             </p>
           </div>
         </button> 
-        <button onClick={handleEventos} className="" >
+        <button onClick={handleModelos} className="" >
           <div className="flex items-center justify-center h-24 rounded overflow-hidden shadow-2xl mb-5 " > 
             <p className="text-gray-700 text-2xl font-bold">
-              Eventos
+              Modelos
             </p>
           </div>
         </button>
-        <button onClick={handleEquipes} className="" >            
+        <button onClick={handleVeiculos} className="" >            
             <div className="flex items-center justify-center h-24 rounded overflow-hidden shadow-2xl mb-5 " > 
               <p className="text-gray-700 text-2xl font-bold">
-                Equipes
+                Veículos
               </p>
             </div>
         </button> 
-        <button onClick={handleAdmin} className={ nivAcesso == nivLiberado ? "text-green-500" : "hidden" }>           
+        <button onClick={handleUsuarios} className={ nivAcesso == nivLiberado ? "text-green-500" : "hidden" }>           
             <div className="flex items-center justify-center h-24 rounded overflow-hidden shadow-2xl mb-5 " > 
               <p className="text-gray-700 text-2xl font-bold">
-                Administradores
+                Usuários
               </p>
             </div>
         </button> 
-        <button onClick={handleTecnicos} className="" >       
+        <button onClick={handleClientes} className="" >       
             <div className="flex items-center justify-center h-24 rounded overflow-hidden shadow-2xl mb-5 " > 
               <p className="text-gray-700 text-2xl font-bold">
-                Técnicos
+                Clientes
               </p>
             </div>
         </button>                               

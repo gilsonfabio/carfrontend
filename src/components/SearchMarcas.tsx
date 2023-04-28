@@ -5,12 +5,12 @@ import Router, { useRouter } from "next/router";
 import { setCookie, parseCookies, destroyCookie } from 'nookies'
 
 interface modalProps {
-    modId: number;
-    modDescricao: string;
+    marId: number;
+    marDescricao: string;
 }
 
-const SearchModalidades = ({usrId, nivel}: any) => {
-    const [modalidades, setModalidades] = useState<Array<modalProps>>([]);
+const SearchMarcas = () => {
+    const [marcas, setMarcas] = useState<Array<modalProps>>([]);
     const [nivLiberado, setNivLiberado] = useState('9');
     const [atualiza, setAtualiza] = useState(0);
     const router = useRouter();
@@ -25,31 +25,17 @@ const SearchModalidades = ({usrId, nivel}: any) => {
     const { 'nextauth.usrNivAcesso': nivAcesso } = parseCookies();
 
     useEffect(() => {
-        if (nivAcesso === nivLiberado) {
-            api({
-                method: 'get',    
-                url: `modalJWT`,
-                headers: {
-                    "x-access-token" : token    
-                },      
-            }).then(function(response) {
-                setModalidades(response.data);
-            }).catch(function(error) {  
-                handleRefreshToken()                 
-            })
-        }else {
-            api({
-                method: 'get',    
-                url: `modUsuario/${idUsr}`,
-                headers: {
-                    "x-access-token" : token    
-                },      
-            }).then(function(response) {
-                setModalidades(response.data);
-            }).catch(function(error) {
-                handleRefreshToken()                
-            })
-        }                              
+        api({
+            method: 'get',    
+            url: `marcas`,
+            headers: {
+                "x-access-token" : token    
+            },      
+        }).then(function(response) {
+            setMarcas(response.data);
+        }).catch(function(error) {  
+            handleRefreshToken()                 
+        })                              
     }, [])
 
     async function handleRefreshToken(){
@@ -76,7 +62,7 @@ const SearchModalidades = ({usrId, nivel}: any) => {
             setCookie(undefined, 'nextauth.usrNivAcesso', response.data.user.usrNivAcesso, {maxAge: 60 * 60 * 1, })                
             setAtualiza(atualiza + 1 )
         }).catch(function(error) {
-            alert(`Falha no token de acesso das modalidades`);
+            alert(`Falha no token de acesso das marcas`);
             Router.push({
                 pathname: '/',        
             })      
@@ -91,41 +77,17 @@ const SearchModalidades = ({usrId, nivel}: any) => {
             const { 'nextauth.usrId': idUsr } = parseCookies();
             const { 'nextauth.usrNivAcesso': nivAcesso } = parseCookies();
 
-            if (nivAcesso === nivLiberado) {
-                api({
-                    method: 'get',    
-                    url: `modalJWT`,
-                    headers: {
-                        "x-access-token" : token    
-                    },      
-                }).then(function(response) {
-                    setModalidades(response.data);
-                }).catch(function(error) {                
-                    alert(`Falha no token de acesso das modalidades`);
-                })
-            }else {
-                api({
-                    method: 'get',    
-                    url: `modUsuario/${idUsr}`,
-                    headers: {
-                        "x-access-token" : token    
-                    },      
-                }).then(function(response) {
-                    setModalidades(response.data);
-                }).catch(function(error) {
-                    api({
-                        method: 'get',    
-                        url: `modUsuario/${idUsr}`,
-                        headers: {
-                            "x-access-token" : refreshToken    
-                        },      
-                    }).then(function(response) {
-                        setModalidades(response.data);
-                    }).catch(function(error) {
-                        alert(`Falha no token de acesso das modalidades`);                  
-                    })
-                })
-            }
+            api({
+                method: 'get',    
+                url: `modalJWT`,
+                headers: {
+                    "x-access-token" : token    
+                },      
+            }).then(function(response) {
+                setMarcas(response.data);
+            }).catch(function(error) {                
+                alert(`Falha no token de acesso das marcas`);
+            })                       
         }                                  
     }, [atualiza])
 
@@ -133,25 +95,25 @@ const SearchModalidades = ({usrId, nivel}: any) => {
         <div className="mb-32 h-auto">
             <div className="flex flex-row justify-between items-center ">
                 <span className="flex flex-row justify-center items-center text-3xl font-bold text-green-600 mt-6 mb-6" >
-                    Modalidades
+                    Marcas
                 </span>
                 <div className={ nivAcesso == nivLiberado ? "text-green-500" : "hidden" }>
-                    <Link href={`/NewModalidade`} > 
+                    <Link href={`/NewMarcas`} > 
                         <a className="flex flex-row items-center justify-center text-green-600 hover:text-white hover:bg-green-600 text-[10px] md:text-[14px] border bottom-1 border-green-600 rounded-full w-24 h-10 md:w-40 md:h-10">
-                            + Modalidades
+                            + Marca
                         </a>  
                     </Link>
                 </div>
             </div>
             <div className="p-2 grid grid-cols-1 gap-1 md:grid-cols-4 md:gap-2 md:mt-3">  
-                {modalidades?.map((row) => ( 
-                    <div key={row.modId} className="items-center justify-center h-20 rounded overflow-hidden shadow-2xl mb-5 w-full " > 
-                        <div className="flex flex-row items-center justify-center text-gray-700 text-2xl font-bold" >{row.modDescricao}</div>
+                {marcas?.map((row) => ( 
+                    <div key={row.marId} className="items-center justify-center h-20 rounded overflow-hidden shadow-2xl mb-5 w-full " > 
+                        <div className="flex flex-row items-center justify-center text-gray-700 text-2xl font-bold" >{row.marDescricao}</div>
                         <div className="flex flex-row justify-center mt-4">
-                            <Link href={`/AltModalidade/${row.modId}`} passHref > 
-                            <div className=" text-green-600 hover:text-white hover:bg-green-600 hover:cursor-pointer text-[10px] md:text-[14px] w-14 h-6 md:w-full md:h-6 rounded-full flex items-center justify-center">
-                                Editar
-                            </div>
+                            <Link href={`/AltMarca/${row.marId}`} passHref > 
+                                <div className=" text-green-600 hover:text-white hover:bg-green-600 hover:cursor-pointer text-[10px] md:text-[14px] w-14 h-6 md:w-full md:h-6 rounded-full flex items-center justify-center">
+                                    Editar
+                                </div>
                             </Link>                    
                         </div>                         
                     </div>                                     
@@ -161,4 +123,4 @@ const SearchModalidades = ({usrId, nivel}: any) => {
     );
 }
 
-export default SearchModalidades;
+export default SearchMarcas;

@@ -14,7 +14,7 @@ export default function Home() {
   async function handleSignIn(data) {
     await signIn(data)
   }
-  //<div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"></div>
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Head>
@@ -26,38 +26,17 @@ export default function Home() {
       </div>
       <div className="bg-gray-100 flex flex-col items-center justify-center space-y-8">
         <div>          
-          <Image src={'/images/logoHome.jpeg'} alt="Logo Prefeitura" width={200} height={50} />
+          <Image src={'/images/logo-barra.png'} alt="Logo Prefeitura" width={230} height={90} />
         </div>
         <div>          
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">SECRETARIA DE ESPORTE, LAZER E JUVENTUDE</h2>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">LIDER MULTIMARCAS</h2>
         </div>
         <div>          
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Faça login na sua conta</h2>
         </div>
         <div className='w-1/2'>
         <form className="w-full space-y-6" onSubmit={handleSubmit(handleSignIn)}>
-          <input type="hidden" name="remember" defaultValue="true" />
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                {...register('tipaccess')}
-                id="tipaccess"
-                name="tipaccess"
-                type="checkbox"
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-              <label htmlFor="tipaccess" className="ml-2 block text-sm text-gray-900">
-                acesso administrativo
-              </label>
-            </div>    
-            <div className="text-sm">
-              <Link href={"/ForgotPassword"} passHref> 
-                <span className="font-medium text-indigo-600 hover:text-indigo-500 hover:cursor-pointer">
-                  Esqueceu sua senha?
-                </span>  
-              </Link>
-            </div>      
-          </div>
+          <input type="hidden" name="remember" defaultValue="true" />          
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="email-address" className="sr-only">
@@ -103,19 +82,12 @@ export default function Home() {
           </div>
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <Link href={("/NewTecnico")} passHref>
+              <Link href={"/ForgotPassword"} passHref> 
                 <span className="font-medium text-indigo-600 hover:text-indigo-500 hover:cursor-pointer">
-                  Faça seu cadastra p/Técnico
+                  Esqueceu sua senha?
                 </span>  
               </Link>
-            </div>
-            <div className="text-sm">
-              <Link href={"/ForgotPassword"} passHref>
-                <span className="font-medium text-indigo-600 hover:text-indigo-500 hover:cursor-pointer">
-                  Esqueceu sua senha Técnico?
-                </span>  
-              </Link>
-            </div>                      
+            </div>      
           </div>
         </form>
         </div>
